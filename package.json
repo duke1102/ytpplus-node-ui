@@ -1,7 +1,7 @@
 {
   "name": "ytpplus-node-ui",
   "productName": "(Initializing...)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A frontend UI for ytpplus-node",
   "main": "index.js",
   "dependencies": {

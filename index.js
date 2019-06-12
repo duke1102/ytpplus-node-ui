@@ -159,43 +159,47 @@ ipcMain.on('settings:set', function(e, item){
 })
 
 ipcMain.on('render', function(){
-    console.log(settings.output)
-    new YTPGenerator().configurateAndGo({
-        
-        debug: settings.debug,
-        sourceList: sources,
-        outro: settings.outro,
-        OUTPUT_FILE: settings.output,
-        MAX_CLIPS: settings.max,
-        MAX_STREAM_DURATION:settings.stream[0],
-        MIN_STREAM_DURATION:settings.stream[1],
-        effectRange: settings.effectRange,
-        ffmpeg: (process.platform === 'win32' ? __dirname+"/ffmpeg.exe" : "ffmpeg"),
-        ffprobe: (process.platform === 'win32' ? __dirname+"/ffprobe.exe" : "ffprobe"),
-        temp: __dirname+"/temp",
-        transitions: settings.transitions,
-        music: music,
-        sounds: sfx,
-        sources: transitions,
-        effects: {  
-            effect_RandomSound: effects.E1,
-            effect_RandomSoundMute: effects.E2,
-            effect_Reverse: effects.E3,
-            effect_Chorus: effects.E4,
-            effect_Vibrato: effects.E5,
-            effect_HighPitch: effects.E6,
-            effect_LowPitch: effects.E7,
-            effect_SpeedUp: effects.E8,
-            effect_SlowDown: effects.E9,
-            effect_Dance: effects.E10,
-            effect_Squidward: effects.E11
-        },
-        resolution:settings.resolution
-    }).then(()=>{
-        mainwindow.webContents.send("render:done",__dirname+"/rendered.mp4");
-    }).catch(()=>{
+    console.log((process.platform === 'win32' ? settings.output.replace("/","\\") : settings.output))
+    if(settings.transitions == true && transitions == null && transitions == undefined) {
         mainwindow.webContents.send("render:error");
-    })
+    } else {
+        new YTPGenerator().configurateAndGo({
+            
+            debug: settings.debug,
+            sourceList: sources,
+            outro: (process.platform === 'win32' ? settings.outro.replace(/\//g,"\\") : settings.outro),
+            OUTPUT_FILE: (process.platform === 'win32' ? settings.output.replace(/\//g,"\\") : settings.output),
+            MAX_CLIPS: settings.max,
+            MAX_STREAM_DURATION:settings.stream[0],
+            MIN_STREAM_DURATION:settings.stream[1],
+            effectRange: settings.effectRange,
+            ffmpeg: (process.platform === 'win32' ? __dirname+"\\ffmpeg.exe" : "ffmpeg"),
+            ffprobe: (process.platform === 'win32' ? __dirname+"\\ffprobe.exe" : "ffprobe"),
+            temp: (process.platform === 'win32' ? __dirname+"\\temp" : __dirname+"/temp"),
+            transitions: settings.transitions,
+            music: (process.platform === 'win32' ? music+"\\" : music+"/"),
+            sounds: (process.platform === 'win32' ? sfx+"\\" : sfx+"/"),
+            sources: (process.platform === 'win32' ? transitions+"\\" : transitions+"/"),
+            effects: {  
+                effect_RandomSound: effects.E1,
+                effect_RandomSoundMute: effects.E2,
+                effect_Reverse: effects.E3,
+                effect_Chorus: effects.E4,
+                effect_Vibrato: effects.E5,
+                effect_HighPitch: effects.E6,
+                effect_LowPitch: effects.E7,
+                effect_SpeedUp: effects.E8,
+                effect_SlowDown: effects.E9,
+                effect_Dance: effects.E10,
+                effect_Squidward: effects.E11
+            },
+            resolution:settings.resolution
+        }).then(()=>{
+            mainwindow.webContents.send("render:done",__dirname+"/rendered.mp4");
+        }).catch(()=>{
+            mainwindow.webContents.send("render:error");
+        })
+    }
 })
 
 app.on("ready",function() {
