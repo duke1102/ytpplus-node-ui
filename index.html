@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <title>YTP++ Beta</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <script>__dirname = __dirname.replace("app.asar","")</script>
+</head>
+
+<body>
+    <script>
+        __settings = [
+            false,
+            true,
+            __dirname+"/resources/outro.mp4",
+            __dirname+"/sounds",
+            __dirname+"/music",
+            __dirname+"/sources",
+            [0.2,0.4],
+            [0,11],
+            [640,480],
+            20,
+            __dirname+"/rendered.mp4"
+        ],
+        __effects = [
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+        ]
+    </script>
+    <nav class="grey nav-extended">
+        <div class="nav-wrapper">
+            <a href="#" onclick id="headbutton" class="center brand-logo">YTP++ Beta</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <form>
+                    <!-- <li id="help1"><a target="_blank" href="https://discord.gg/6NZArYA"><i class="material-icons left">question_answer</i>Help</a></li>-->
+                    <li><a target="_blank" href="https://github.com/TeamPopplio/ytpplus-node-ui/issues"><i class="material-icons left">bug_report</i>Submit issue</a></li>
+                    <li><a href="#" id="tempfiles"><i class="material-icons left">clear_all</i>View temporary files</a></li>
+                    <li><a class="waves-effect waves-light btn-large modal-trigger" href="#render" onclick="
+                        if(document.querySelector('#transitions').checked) {
+                            if(document.querySelector('#transitions').checked != '')
+                                __settings[0] = true 
+                        }
+                        if(document.querySelector('#console').checked) {
+                            if(document.querySelector('#console').checked != '')
+                                __settings[1] = true 
+                        }
+                        __settings[2] = document.querySelector('#outro').value
+                        __settings[3] = document.querySelector('#sfxclips').value
+                        __settings[4] = document.querySelector('#musicclips').value
+                        __settings[5] = document.querySelector('#transitionclips').value
+                        __settings[6] = [document.querySelector('#min').value,document.querySelector('#max').value]
+                        __settings[7] = [document.querySelector('#min2').value,document.querySelector('#max2').value]
+                        __settings[8] = [document.querySelector('#w').value,document.querySelector('#h').value]
+                        __settings[9] = document.querySelector('#c').value
+                        __settings[10] = __dirname+'/rendered.mp4'
+                        var rs = document.querySelector('#rendersettings')
+                        rs.className = 'collection';
+                        for(i=0;i<__settings.length;i++) {
+                            const li = document.createElement('li');
+                            li.className = 'collection-item';
+                            var itemText = ``
+                            switch (i) {
+                                case 0:
+                                    itemText = `Transitions: `+__settings[i];
+                                    break;
+                                case 1:
+                                    itemText = `Console: `+__settings[i];
+                                    break;
+                                case 2:
+                                    itemText = `Outro: `+__settings[i];
+                                    break;
+                                case 3:
+                                    itemText = `SFX dir: `+__settings[i];
+                                    break;
+                                case 4:
+                                    itemText = `Music dir: `+__settings[i];
+                                    break;
+                                case 5:
+                                    itemText = `Transition dir: `+__settings[i];
+                                    break;
+                                case 6:
+                                    itemText = `Min/Max stream duration: [`+__settings[i]+`]`;
+                                    break;
+                                case 7:
+                                    itemText = `Effect range: [`+__settings[i]+`]`;
+                                    break;
+                                case 8:
+                                    itemText = `Width/Height: [`+__settings[i]+`]`;
+                                    break;
+                                case 9:
+                                    itemText = `Clip count: `+__settings[i];
+                                    break;
+                                case 10:
+                                    itemText = `Render destination: `+__settings[i];
+                                    break;
+                                default:
+                                    itemText = `Unknown: `+__settings[i];
+                                    break;
+                            }
+                            
+                            li.appendChild(document.createTextNode(itemText));
+                            rs.appendChild(li);
+                        }
+                        rs = document.querySelector('#rendereffects')
+                        rs.className = 'collection';
+                        for(i=0;i<__effects.length;i++) {
+                            const li = document.createElement('li');
+                            li.className = 'collection-item';
+                            var itemText = ``
+                            switch (i) {
+                                case 0:
+                                    itemText = `Random sound: `+__effects[i];
+                                    break;
+                                case 1:
+                                    itemText = `Random sound (Mute OG): `+__effects[i];
+                                    break;
+                                case 2:
+                                    itemText = `Reverse: `+__effects[i];
+                                    break;
+                                case 3:
+                                    itemText = `Speed up (no pitch): `+__effects[i];
+                                    break;
+                                case 4:
+                                    itemText = `Slow down (no pitch): `+__effects[i];
+                                    break;
+                                case 5:
+                                    itemText = `Chorus: `+__effects[i];
+                                    break;
+                                case 6:
+                                    itemText = `Vibrato: `+__effects[i];
+                                    break;
+                                case 7:
+                                    itemText = `Speed up (/pitch): `+__effects[i];
+                                    break;
+                                case 8:
+                                    itemText = `Slow down (/pitch): `+__effects[i];
+                                    break;
+                                case 9:
+                                    itemText = `Dance: `+__effects[i];
+                                    break;
+                                case 10:
+                                    itemText = `Squidward: `+__effects[i];
+                                    break;
+                                default:
+                                    itemText = `Unknown: `+__effects[i];
+                                    break;
+                            }
+                            
+                            li.appendChild(document.createTextNode(itemText));
+                            rs.appendChild(li);
+                        }
+                    ">Render</a>
+                    </li>
+                </form>
+            </ul>
+        </div>
+        <div class="nav-content grey darken-1">
+            <ul id="tabs-swipe" class="tabs tabs-transparent">
+                <li class="center tab col s3"><a href="#introduction-swipe"><i class="material-icons center">info</i></a></li>
+                <li class="center tab col s3"><a href="#materials-swipe"><i class="material-icons center">camera_roll</i></a></li>
+                <li class="center tab col s3"><a href="#setup-swipe"><i class="material-icons center">settings</i></a></li>
+            </ul>
+        </div>
+    </nav>
+    <ul class="sidenav" id="mobile-demo">
+        <h5 class="center header col s12 light">Menu</h5>
+        <!-- <li id="help"><a target="_blank" href="https://discord.gg/6NZArYA"><i class="material-icons left">question_answer</i>Help</a></li>-->
+        <li><a href="#" id="tempfilesmobile"><i class="material-icons left">clear_all</i>View temporary files</a></li>
+        <script>
+            const electron = require('electron');
+            const {
+                shell
+            } = electron;
+            document.querySelector('#tempfiles').addEventListener('click', submitForm)
+            document.querySelector('#tempfilesmobile').addEventListener('click', submitForm)
+
+            function submitForm() {
+                shell.openItem(__dirname + (process.platform == "win32" ? "\\temp" : __dirname+"/temp"));
+            }
+        </script>
+        <li id="issue"><a target="_blank" href="https://github.com/TeamPopplio/ytpplus-node-ui/issues"><i class="material-icons left">bug_report</i>Submit issue</a></li>
+        <li><a class="waves-effect waves-light btn-large modal-trigger" href="#render" onclick="
+                        if(document.querySelector('#transitions').checked) {
+                            if(document.querySelector('#transitions').checked != '')
+                                __settings[0] = true 
+                        }
+                        console.log('part 1')
+                        if(document.querySelector('#console').checked) {
+                            if(document.querySelector('#console').checked != '')
+                                __settings[1] = true 
+                        }
+                        console.log('part 2')
+                        __settings[2] = document.querySelector('#outro').value
+                        console.log('part 3')
+                        __settings[3] = document.querySelector('#sfxclips').value
+                        console.log('part 4')
+                        __settings[4] = document.querySelector('#musicclips').value
+                        console.log('part 5')
+                        __settings[5] = document.querySelector('#transitionclips').value
+                        console.log('part 6')
+                        __settings[6] = [document.querySelector('#min').value,document.querySelector('#max').value]
+                        console.log('part 7')
+                        __settings[7] = [document.querySelector('#min2').value,document.querySelector('#max2').value]
+                        console.log('part 8')
+                        __settings[8] = [document.querySelector('#w').value,document.querySelector('#h').value]
+                        console.log('part 9')
+                        __settings[9] = document.querySelector('#c').value
+                        console.log('part 10')
+                        __settings[10] = __dirname+'/rendered.mp4'
+            var rs = document.querySelector('#rendersettings')
+            rs.className = 'collection';
+            for(i=0;i<__settings.length;i++) {
+                const li = document.createElement('li');
+                li.className = 'collection-item';
+                var itemText = ``
+                switch (i) {
+                    case 0:
+                        itemText = `Transitions: `+__settings[i];
+                        break;
+                    case 1:
+                        itemText = `Console: `+__settings[i];
+                        break;
+                    case 2:
+                        itemText = `Outro: `+__settings[i];
+                        break;
+                    case 3:
+                        itemText = `SFX dir: `+__settings[i];
+                        break;
+                    case 4:
+                        itemText = `Music dir: `+__settings[i];
+                        break;
+                    case 5:
+                        itemText = `Transition dir: `+__settings[i];
+                        break;
+                    case 6:
+                        itemText = `Min/Max stream duration: [`+__settings[i]+`]`;
+                        break;
+                    case 7:
+                        itemText = `Effect range: [`+__settings[i]+`]`;
+                        break;
+                    case 8:
+                        itemText = `Width/Height: [`+__settings[i]+`]`;
+                        break;
+                    case 9:
+                        itemText = `Clip count: `+__settings[i];
+                        break;
+                    case 10:
+                        itemText = `Render destination: `+__settings[i];
+                        break;
+                    default:
+                        itemText = `Unknown: `+__settings[i];
+                        break;
+                }
+                
+                li.appendChild(document.createTextNode(itemText));
+                rs.appendChild(li);
+            }
+            rs = document.querySelector('#rendereffects')
+            rs.className = 'collection';
+            for(i=0;i<__effects.length;i++) {
+                const li = document.createElement('li');
+                li.className = 'collection-item';
+                var itemText = ``
+                switch (i) {
+                    case 0:
+                        itemText = `Random sound: `+__effects[i];
+                        break;
+                    case 1:
+                        itemText = `Random sound (Mute OG): `+__effects[i];
+                        break;
+                    case 2:
+                        itemText = `Reverse: `+__effects[i];
+                        break;
+                    case 3:
+                        itemText = `Speed up (no pitch): `+__effects[i];
+                        break;
+                    case 4:
+                        itemText = `Slow down (no pitch): `+__effects[i];
+                        break;
+                    case 5:
+                        itemText = `Chorus: `+__effects[i];
+                        break;
+                    case 6:
+                        itemText = `Vibrato: `+__effects[i];
+                        break;
+                    case 7:
+                        itemText = `Speed up (/pitch): `+__effects[i];
+                        break;
+                    case 8:
+                        itemText = `Slow down (/pitch): `+__effects[i];
+                        break;
+                    case 9:
+                        itemText = `Dance: `+__effects[i];
+                        break;
+                    case 10:
+                        itemText = `Squidward: `+__effects[i];
+                        break;
+                    default:
+                        itemText = `Unknown: `+__effects[i];
+                        break;
+                }
+                
+                li.appendChild(document.createTextNode(itemText));
+                rs.appendChild(li);
+            }
+        ">Render</a></li>
+    </ul>
+    <!-- Modal Structure -->
+    <div id="render" class="modal modal-fixed-footer">
+        <div class="modal-content">
+          <h4>Render</h4>
+          <p>The video will be rendered with the following settings:</p>
+          <ul id="rendersettings"></ul>
+          <p>The video will be rendered with the following effects:</p> 
+          <ul id="rendereffects"></ul>
+          <p>Do these look correct?</p>
+        </div>
+        <div class="modal-footer">
+          <a href="#rendering" no-autoinit="ok" class="modal-close waves-effect waves-green btn-flat modal-trigger" onclick="
+                var {ipcRenderer} = require('electron')
+                ipcRenderer.send('settings:set',[
+                    document.querySelector('#c').value,
+                    [document.querySelector('#min2').value,document.querySelector('#max2').value],
+                    [document.querySelector('#min').value,document.querySelector('#max').value],
+                    [document.querySelector('#w').value,document.querySelector('#h').value],
+                    __dirname+'/rendered.mp4' //add support for this later
+                ])
+                ipcRenderer.send('render');
+            ">Yes</a>
+          <a href="#!" class="modal-close waves-effect waves-red btn-flat" onclick="
+                document.querySelector('#rendereffects').innerHTML = ''
+                document.querySelector('#rendersettings').innerHTML = ''
+          ">No</a>
+        </div>
+    </div>
+    <script>
+        var {ipcRenderer} = require("electron")
+        ipcRenderer.on('render:error',function() {
+            M.Modal.getInstance(document.querySelector('#rendering')).close();
+            M.Modal.getInstance(document.querySelector('#renderfailed')).open();
+        })
+        ipcRenderer.on('render:done',function() {
+            M.Modal.getInstance(document.querySelector('#rendering')).close();
+            M.Modal.getInstance(document.querySelector('#renderdone')).open();
+        })
+    </script>
+    <div id="rendering" class="modal">
+        <div class="modal-content">
+            <h4>Rendering...</h4>
+            <p>If console is enabled, you will see output if you opened YTP++ in a terminal emulator. (or command prompt)</p>
+            <div class="center">
+                <div class="progress">
+                    <div class="indeterminate"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="renderfailed" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Failed to render</h4>
+            <p>Documented causes for render fails are:</p>
+            <ul class="collection">
+                <li class="collection-item">No sources</li>
+                <li class="collection-item">A clip/path from one of the included directories has a space in it</li>
+                <li class="collection-item">A source material has a space in it</li>
+                <li class="collection-item">Your maximum clip setting may be too long</li>
+                <li class="collection-item">Settings are left blank or invalid</li>
+                <li class="collection-item">No outro is specified</li>
+            </ul>
+            <p>If console is enabled, you will see what caused the render to fail. If it seems to be undocumented, please make an issue on ytpplus-node's GitHub repository.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#render" no-autoinit="ok" class="modal-close waves-effect waves-green btn-flat modal-trigger" onclick="">Try Again</a>
+            <a href="#!" class="modal-close waves-effect waves-red btn-flat" onclick="">Close</a>
+        </div>
+    </div>
+    <div id="renderdone" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Render complete</h4>
+            <p>The video has finished rendering. Playback functionality will be added in a future update.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#render" no-autoinit="ok" class="modal-close waves-effect waves-green btn-flat modal-trigger" onclick="">Render Again</a>
+            <a href="#!" class="modal-close waves-effect waves-red btn-flat" onclick="">Close</a>
+        </div>
+    </div>
+    <div id="setup-swipe">
+        <div id="effectlist" class="container">
+            <div class="col s12 m6">
+                <div id="" class="card grey">
+                    <div class="card-content white-text">
+                        <span class="card-title">Effects</span>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E1" type="checkbox" class="white filled-in"onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[0] = !__effects[0]
+                                    ">
+                                    <span class="white-text">Random Sound (Requires SFX)</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E2" type="checkbox" class="white filled-in" onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[1] = !__effects[1]
+                                    ">
+                                    <span class="white-text">Random Sound (Mute OG, requires SFX)</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E3" type="checkbox" checked="checked" class="white filled-in" onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[2] = !__effects[2]
+                                    ">
+                                    <span class="white-text">Reverse clip</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E4" type="checkbox" checked="checked" class="white filled-in" onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[3] = !__effects[3]
+                                    ">
+                                    <span class="white-text">Speed Up Clip (no pitch)</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E5" type="checkbox" checked="checked" class="white filled-in" onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[4] = !__effects[4]
+                                    ">
+                                    <span class="white-text">Slow Down Clip (no pitch)</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E6" type="checkbox" checked="checked" class="white filled-in" onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[5] = !__effects[5]
+                                    ">
+                                    <span class="white-text">Chrous Audio</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E7" type="checkbox" checked="checked" class="white filled-in"onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[6] = !__effects[6]
+                                    ">
+                                    <span class="white-text">Vibrato Audio</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E8" type="checkbox" checked="checked" class="white filled-in" onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[7] = !__effects[7]
+                                    ">
+                                    <span class="white-text">Speed Up Clip (/pitch)</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E9" type="checkbox" checked="checked" class="white filled-in" onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[8] = !__effects[8]
+                                    ">
+                                    <span class="white-text">Slow Down Clip (/pitch)</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E10" type="checkbox" class="white filled-in"onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[9] = !__effects[9]
+                                    ">
+                                    <span class="white-text">Dance (Requires music)</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form>
+                            <p>
+                                <label>
+                                    <input id="E11" type="checkbox" checked="checked" class="white filled-in"onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('effect:toggle',this.id);
+                                        __effects[10] = !__effects[10]
+                                    ">
+                                    <span class="white-text">Squidward (NOT IMPLEMENTED)</span>
+                                </label>
+                            </p>
+                        </form>
+                    </div>
+                    <div class="card-action grey darken-1">
+                        <a href="#effectlist" onclick="
+                                document.querySelector('#E1').checked = 'checked';
+                                document.querySelector('#E2').checked = 'checked';
+                                document.querySelector('#E3').checked = 'checked';
+                                document.querySelector('#E4').checked = 'checked';
+                                document.querySelector('#E5').checked = 'checked';
+                                document.querySelector('#E6').checked = 'checked';
+                                document.querySelector('#E7').checked = 'checked';
+                                document.querySelector('#E8').checked = 'checked';
+                                document.querySelector('#E9').checked = 'checked';
+                                document.querySelector('#E10').checked = 'checked';
+                                document.querySelector('#E11').checked = 'checked';
+                                __effects = [
+                                    true,
+                                    true,
+                                    true,
+                                    true,
+                                    true,
+                                    true,
+                                    true,
+                                    true,
+                                    true,
+                                    true,
+                                    true
+                                ]
+                            ">Enable all</a>
+                        <a href="#effectlist" onclick="
+                                document.querySelector('#E1').checked = '';
+                                document.querySelector('#E2').checked = '';
+                                document.querySelector('#E3').checked = '';
+                                document.querySelector('#E4').checked = '';
+                                document.querySelector('#E5').checked = '';
+                                document.querySelector('#E6').checked = '';
+                                document.querySelector('#E7').checked = '';
+                                document.querySelector('#E8').checked = '';
+                                document.querySelector('#E9').checked = '';
+                                document.querySelector('#E10').checked = '';
+                                document.querySelector('#E11').checked = '';
+                                __effects = [
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false
+                                ]
+                            ">Disable all</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="options" class="container">
+            <div class="col s12 m6">
+                <div id="" class="card grey">
+                    <div class="card-content white-text">
+
+                        <span class="card-title">Options</span>
+                        <form action="#">
+                            <p>
+                                <label class="tooltipped" data-position="top" data-tooltip="If enabled, the below transition clips will be played at their original length at random intervals. (A  6.25% chance)">
+                                    <input id="transitions" type="checkbox" class="white filled-in" onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('settings:toggle',this.id);
+                                        __settings[0] = !__settings[0]
+                                    ">
+                                    <span class="white-text">Insert transition clips</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form action="#">
+                            <p>
+                                <label class="tooltipped" data-position="bottom" data-tooltip="If enabled, you will see the output of ytpplus-node's debug mode. Not very verbose but it is useful if something did not work initially.">
+                                    <input id="console" type="checkbox" class="white filled-in" checked="checked" onclick="
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('settings:toggle',this.id);
+                                        __settings[1] = !__settings[1]
+                                    ">
+                                    <span class="white-text">See console output</span>
+                                </label>
+                            </p>
+                        </form>
+                        <form action="#">
+                            <div class="file-field input-field">
+                                <div class="btn tooltipped" onclick="
+                                    var filePaths = require('electron').remote.dialog.showOpenDialog({
+                                            title:'Select Outro',
+                                            defaultPath:__dirname,
+                                            filters:[
+                                                { name: 'MPEG-4 Videos', extensions: ['mp4'] }
+                                            ],
+                                            properties: ['openFile'] 
+                                        })
+                                    if(filePaths) {
+                                        document.querySelector('#outro').value=filePaths[0]
+                                        var {ipcRenderer} = require('electron')
+                                        ipcRenderer.send('outro:set',filePaths[0]);
+                                    }
+                                " data-position="bottom" data-tooltip="An outro will play at the end of every rendered video, you can replace the default one here.">
+                                <span>Outro clip</span>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input id="outro" class="file-path validate white-text" value="PLACEHOLDER" type="text">
+                                    <script>
+                                        document.querySelector("#outro").value = __dirname+"/resources/outro.mp4"
+                                    </script>
+                                </div>
+                            </div>
+                        </form>
+                        <form action="#">
+                            <div class="file-field input-field">
+                                <div class="btn tooltipped" onclick="
+                                    var filePaths = require('electron').remote.dialog.showOpenDialog({
+                                        title:'Select SFX Directory',
+                                        defaultPath:__dirname,
+                                        properties: ['openDirectory'] 
+                                    })
+                                    var {ipcRenderer} = require('electron')
+                                    if(filePaths) {
+                                        ipcRenderer.send('sfx:set',filePaths[0]);
+                                        __settings[3] = filePaths[0]
+                                        document.querySelector('#sfxclips').value=filePaths[0]
+                                    }
+                                " data-position="bottom" data-tooltip="You are only required to change this if the 'Random sound' effects have been enabled. There are no default sounds, so this value must be set before proceeding.">
+                                <span>SFX DIR</span>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input id="sfxclips" class="file-path validate white-text" value="PLACEHOLDER" type="text">
+                                    <script>
+                                        document.querySelector("#sfxclips").value = __dirname+"/sounds"
+                                    </script>
+                                </div>
+                            </div>
+                        </form>
+                        <form action="#">
+                                <div class="file-field input-field">
+                                    <div class="btn tooltipped" onclick="
+                                        var filePaths = require('electron').remote.dialog.showOpenDialog({
+                                            title:'Select Music Directory',
+                                            defaultPath:__dirname,
+                                            properties: ['openDirectory'] 
+                                        })
+                                        var {ipcRenderer} = require('electron')
+                                        if(filePaths) {
+                                            ipcRenderer.send('music:set',filePaths[0]);
+                                            __settings[4] = filePaths[0]
+                                            document.querySelector('#musicclips').value=filePaths[0]
+                                        }
+                                    " data-position="bottom" data-tooltip="You are only required to change this if the 'Dance' effect has been enabled. There are no default music tracks, so this value must be set before proceeding.">
+                                    <span>MUSIC DIR</span>
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input id="musicclips" class="file-path validate white-text" value="PLACEHOLDER" type="text">
+                                        <script>
+                                            document.querySelector("#musicclips").value = __dirname+"/music"
+                                        </script>
+                                    </div>
+                                </div>
+                            </form>
+                        <form action="#">
+                            <div class="file-field input-field">
+                                <div class="btn tooltipped" onclick="
+                                    var filePaths = require('electron').remote.dialog.showOpenDialog({
+                                        title:'Select Transition Directory',
+                                        defaultPath:__dirname,
+                                        properties: ['openDirectory'] 
+                                    })
+                                    var {ipcRenderer} = require('electron')
+                                    if(filePaths) {
+                                        ipcRenderer.send('transitions:set',filePaths[0]);
+                                        __settings[5] = filePaths[0]
+                                        document.querySelector('#transitionclips').value=filePaths[0]
+                                    }
+                                " data-position="bottom" data-tooltip="You are only required to change this if the 'Insert transition clips' setting has been enabled. There are no default transitions, so this value must be set before proceeding.">
+                                <span>TRANSITIONS DIR</span>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input id="transitionclips" class="file-path validate white-text" value="PLACEHOLDER" type="text">
+                                    <script>
+                                        document.querySelector("#transitionclips").value = __dirname+"/sources"
+                                    </script>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="col s12 m6">
+                            <div class="row center tooltipped" data-position="bottom" data-tooltip="The min/max stream lengths only apply to source materials, YTP++ will choose a random decimal value between these two and splice the source randomly.">
+                                <div class="center input-field col m5">
+                                    <input id="min" value="0.2" type="number" class="white-text">
+                                    <label for="min" class="white-text">Minimum stream duration</label>
+                                </div>
+                                <div class="center input-field col m5">
+                                    <input id="max" value="0.4" type="number" class="white-text">
+                                    <label for="max" class="white-text">Maximum stream duration</label>
+                                </div>
+                            </div>
+                            <div class="row tooltipped" data-position="bottom" data-tooltip="The min/max effect ranges determine what set of effects should be activated using the order as seen below. The 0 value (and other effects' values if disabled) specifies an effect-less clip.">
+                                <div class="center input-field col m5">
+                                    <input id="min2" value="0" type="number" class="white-text">
+                                    <label for="min2" class="white-text  ">Minimum effect range (0-10)</label>
+                                </div>
+                                <div class="center input-field col m5">
+                                    <input id="max2" value="11" type="number" class="white-text">
+                                    <label for="max2" class="white-text">Maximum effect range (1-11)</label>
+                                </div>
+                            </div>
+                            <div class="row tooltipped" data-position="bottom" data-tooltip="The width/height settings determine the resolution each effect uses and eventually what the output resolution will be.">
+                                <div class="center input-field col m5">
+                                    <input id="w" value="640" type="number" class="white-text">
+                                    <label for="w" class="white-text  ">Render width</label>
+                                </div>
+                                <div class="center input-field col m5">
+                                    <input id="h" value="480" type="number" class="white-text">
+                                    <label for="h" class="white-text">Render height</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="center input-field col m5">
+                                    <input id="c" value="20" type="number" class="white-text">
+                                    <label for="c" class="white-text  ">Clip count</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action grey darken-1">
+                        <a href="#options" onclick="
+                            var {ipcRenderer} = require('electron')
+                            document.querySelector('#transitions').checked = '';
+                            document.querySelector('#console').checked = 'checked';
+                            document.querySelector('#outro').value = __dirname+'/resources/outro.mp4';
+                            document.querySelector('#musicclips').value = __dirname+'/music';
+                            document.querySelector('#sfxclips').value = __dirname+'/sounds';
+                            document.querySelector('#transitionclips').value = __dirname+'/sources';
+                            document.querySelector('#min').value = '0.2';
+                            document.querySelector('#max').value = '0.4';
+                            document.querySelector('#min2').value = '0';
+                            document.querySelector('#max2').value = '11';
+                            document.querySelector('#w').value = '640';
+                            document.querySelector('#h').value = '480';
+                            document.querySelector('#c').value = '20';
+                            ipcRenderer.send('settings:reset');
+                        ">Reset</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    </div>
+    <div id="materials-swipe" class="col s12">
+        <div class="col s12 m6">
+            <div class="container">
+                <div class="col s12 m6">
+                    <div id="" class="card grey">
+                        <div class="card-content white-text">
+                            <span class="card-title">Materials</span>
+                            <ls id="sourceclips">
+                                <!--- <span class="white-text">C:\Users\Kisu-Amare\Downloads\outro.mp4</span> --->
+                            </ls>
+                        </div>
+                        <div class="card-action grey darken-1">
+                                <a href="#transi" onclick="
+                                var {ipcRenderer} = require('electron');
+                                const ul = document.querySelector('#sourceclips');
+                                require('electron').remote.dialog.showOpenDialog(
+                                    {
+                                        title:'Select Source Materials',
+                                        defaultPath:__dirname,
+                                        message:`Please only select video files that don't have spaces.`,
+                                        filters:[
+                                            { name: 'MPEG-4 Videos', extensions: ['mp4'] }
+                                        ],
+                                        properties: ['openFile', 'multiSelections']
+                                    },function(filePaths) {
+                                        if(filePaths) {
+                                            for(var i=0;i < filePaths.length;i++) {
+                                                const divider = document.createElement('div')
+                                                divider.className = 'col'
+                                                const li = document.createElement('span');
+                                                li.className = 'white-text'
+                                                li.appendChild(document.createTextNode(filePaths[i]))
+                                                //const btn = document.createElement('div')
+                                                divider.appendChild(li)
+                                                ul.appendChild(divider)
+                                                ipcRenderer.send('sources:add',filePaths[i]);
+                                            }
+                                        }
+                                    })
+                            ">Add materials</a>
+                        <a href="#" onclick="
+                                var {ipcRenderer} = require('electron')
+                                const ul = document.querySelector('#sourceclips');
+                                ul.innerHTML = ''
+                                ipcRenderer.send('sources:clear');
+                            ">Clear materials</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row center">
+            <a id="setuprefer1" href="#" id="download-button" class="btn-large waves-effect tooltipped waves-light grey" data-position="bottom" data-tooltip="Set variables to your liking before rendering.">Proceed to configuration</a>
+        </div>
+    </div>
+    <div id="introduction-swipe" class="col s12">
+        <div class="section no-pad-bot" id="index-banner">
+            <div class="container">
+                <h1 class="header center grey-text">Welcome to the YTP++ Beta!</h1>
+                <div class="row center">
+                    <h5 class="header col s12 light">Please leave feedback if you'd like.</h5>
+                    <h5 class="header col s12 light">When uploading videos, do not use paths or clips with spaces.</h5>
+                </div>
+                <div class="row center">
+                    <a id="setuprefer2" href="#" id="download-button" class="btn-large waves-effect tooltipped waves-light grey" data-position="bottom" data-tooltip="Add source material to splice and add effects to.">Start generating!</a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="section">
+                <div class="row center">
+                    <h5 class="header col s12 light">What's new?</h5>
+                </div>
+                <!--   Icon Section   -->
+                <div class="row">
+
+                    <div class="col s12 m4">
+                        <div class="icon-block">
+                            <h2 class="center light-blue-text"><i class="material-icons">crop</i></h2>
+                            <h5 class="center">Set resolution</h5>
+
+                            <p class="light">YTP++ allows you to set the resolution for the different effects and eventually the final product. This is not possible in the original version.</p>
+                        </div>
+                    </div>
+
+                    <div class="col s12 m4">
+                        <div class="icon-block">
+                            <h2 class="center light-blue-text"><i class="material-icons">tune</i></h2>
+                            <h5 class="center">Set range</h5>
+
+                            <p class="light">Want only a specific or small range of effects? Setting the range of the effects will allow you to even output a single effect rather than dealing with intermediate clips.</p>
+                        </div>
+                    </div>
+
+                    <div class="col s12 m4">
+                        <div class="icon-block">
+                            <h2 class="center light-blue-text"><i class="material-icons">video_library</i></h2>
+                            <h5 class="center">Outro clips</h5>
+
+                            <p class="light">Ever wanted to tag your creations? YTP++ can automagically add outro clips to your videos, defeating the need of editing software.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="section">
+                <div class="row center">
+                    <div class="row">
+                        <div class="col s12 m4">
+                            <div class="icon-block">
+                                <h2 class="center light-blue-text"><i class="material-icons">movie_filter</i></h2>
+                                <h5 class="center">A new look</h5>
+
+                                <p class="light">Using the power of Electron and Materialize, YTP++ has a distinctive look with easier and more fluent usage.</p>
+                            </div>
+                        </div>
+                        <div class="col s12 m4">
+                            <div class="icon-block">
+                                <h2 class="center light-blue-text"><i class="material-icons">thumbs_up_down</i></h2>
+                                <h5 class="center">Feedback oriented</h5>
+
+                                <p class="light">Since the port from Java to Node.js, it has become easier to implement new ideas and listen to feedback more than ever. Any feedback is always appriciated!</p>
+                            </div>
+                        </div>
+
+                        <div class="col s12 m4">
+                            <div class="icon-block">
+                                <h2 class="center light-blue-text"><i class="material-icons">build</i></h2>
+                                <h5 class="center">More stable</h5>
+
+                                <p class="light">The original software seemed to have some issues, however some of these have been resolved thanks to porting from Java to Node.js.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+        <footer class="page-footer grey ">
+            <div class="container">
+                <div class="row">
+                    <div class="col l3 s12">
+                        <h5 class="white-text">YTP++ Team</h5>
+                        <ul>
+                            <li><a class="white-text" target="_blank" href="https://github.com/TeamPopplio">TeamPopplio (LimeQuartz)</a></li>
+                        </ul>
+                    </div>
+                    <div class="col l3 s12">
+                        <h5 class="white-text">YTP+ Credits</h5>
+                        <ul>
+                            <li><a class="white-text" target="_blank" href="https://github.com/philosophofee">Ben 'Philosophofee'</a></li>
+                            <li><a class="white-text" target="_blank" href="https://arctic.zone">arctic.zone</a></li>
+                        </ul>
+                    </div>
+                    <div class="col l3 s12">
+                        <h5 class="white-text">Sources used</h5>
+                        <ul>
+                            <li><a class="white-text"  target="_blank" href="https://nodejs.org/">Node.js</a></li>
+                            <li><a class="white-text" target="_blank" href="https://electronjs.org">Electron</a></li>
+                            <li><a class="white-text" target="_blank" href="https://materializecss.com">Materialize CSS</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright grey darken-1">
+                <div class="container">
+                    Layout made with <a class="white-text" target="_blank" href="http://materializecss.com">Materialize</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!--  Scripts-->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script>
+        M.AutoInit()
+        document.querySelector('#setuprefer1').addEventListener("click", () => {
+            var tab = M.Tabs.getInstance(document.querySelector('#tabs-swipe')).$tabLinks.filter('[href="#setup-swipe"]');
+            tab.trigger('click');
+        });
+        document.querySelector('#setuprefer2').addEventListener("click", () => {
+            var tab = M.Tabs.getInstance(document.querySelector('#tabs-swipe')).$tabLinks.filter('[href="#materials-swipe"]');
+            tab.trigger('click');
+        });
+        document.querySelector('#headbutton').addEventListener("click", () => {
+            var tab = M.Tabs.getInstance(document.querySelector('#tabs-swipe')).$tabLinks.filter('[href="#introduction-swipe"]');
+            tab.trigger('click');
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            M.Modal.init(document.querySelector("#rendering"),{dismissible:false})
+        })
+        if (window.module) module = window.module;
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+</body>
+
+</html>

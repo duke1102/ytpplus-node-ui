@@ -1,0 +1,42 @@
+{
+  "name": "ytpplus-node-ui",
+  "productName": "(Initializing...)",
+  "version": "1.0.0",
+  "description": "A frontend UI for ytpplus-node",
+  "main": "index.js",
+  "dependencies": {
+    "update-electron-app": "^1.4.2",
+    "ytpplus-node": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^5.0.3",
+    "electron-packager": "^13.1.1"
+  },
+  "scripts": {
+    "start": "electron ./index.js",
+    "package-mac": "echo 'When compiling for your own usage, make sure to include the stock resources. (such as the outro)' && electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+    "package-win": "echo 'When compiling for your own usage, make sure to include the stock resources. (such as the outro)' && electron-packager . ytpplusplus --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"(Initializing...)\"",
+    "package-linux": "echo 'When compiling for your own usage, make sure to include the stock resources. (such as the outro)' && electron-packager . ytpplusplus --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeamPopplio/ytpplus-node-ui.git"
+  },
+  "keywords": [
+    "ytp",
+    "youtube",
+    "poop",
+    "ytpplus",
+    "ytp+",
+    "arctic.zone",
+    "electron",
+    "nodejs",
+    "node.js"
+  ],
+  "author": "TeamPopplio",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/TeamPopplio/ytpplus-node-ui/issues"
+  },
+  "homepage": "https://github.com/TeamPopplio/ytpplus-node-ui#readme"
+}
