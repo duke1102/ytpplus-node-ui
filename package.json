@@ -6,7 +6,7 @@
   "main": "index.js",
   "dependencies": {
     "update-electron-app": "^1.4.2",
-    "ytpplus-node": "^1.0.0"
+    "ytpplus-node": "^1.1.0"
   },
   "devDependencies": {
     "electron": "^5.0.3",
