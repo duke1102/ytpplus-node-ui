@@ -195,9 +195,15 @@ ipcMain.on('render', function(){
             },
             resolution:settings.resolution
         }).then(()=>{
+            mainwindow.flashFrame(true)
             mainwindow.webContents.send("render:done",__dirname+"/rendered.mp4");
-        }).catch(()=>{
-            mainwindow.webContents.send("render:error");
+        }).catch((err)=>{
+            mainwindow.flashFrame(true)
+            console.log(err)
+            if(!err || err == "")
+                mainwindow.webContents.send("render:error","no-error-specified");
+            else
+                mainwindow.webContents.send("render:error",err);
         })
     }
 })
@@ -223,6 +229,8 @@ app.on("ready",function() {
     mainwindow.on("closed",function() {
         app.quit()
     });
+
+    mainwindow.once('focus', () => mainwindow.flashFrame(false))
 
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate)
     Menu.setApplicationMenu(mainMenu)
