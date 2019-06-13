@@ -351,8 +351,9 @@
     </div>
     <script>
         var {ipcRenderer} = require("electron")
-        ipcRenderer.on('render:error',function() {
+        ipcRenderer.on('render:error',function(e,err) {
             M.Modal.getInstance(document.querySelector('#rendering')).close();
+            document.querySelector('#renderfailedtext').innerHTML = 'This information may be useful: '+err.toString()
             M.Modal.getInstance(document.querySelector('#renderfailed')).open();
         })
         ipcRenderer.on('render:done',function() {
@@ -360,10 +361,10 @@
             M.Modal.getInstance(document.querySelector('#renderdone')).open();
         })
     </script>
-    <div id="rendering" class="modal">
+    <div id="rendering" no-autoinit="ok" class="modal">
         <div class="modal-content">
             <h4>Rendering...</h4>
-            <p>If console is enabled, you will see output if you opened YTP++ in a terminal emulator. (or command prompt)</p>
+            <p>If console is enabled, you will see output if you opened YTP++ in a terminal emulator.</p>
             <div class="center">
                 <div class="progress">
                     <div class="indeterminate"></div>
@@ -371,19 +372,22 @@
             </div>
         </div>
     </div>
-    <div id="renderfailed" class="modal modal-fixed-footer">
+    <div id="renderfailed" no-autoinit="ok" class="modal modal-fixed-footer">
         <div class="modal-content">
             <h4>Failed to render</h4>
-            <p>Documented causes for render fails are:</p>
+            <p id="renderfailedtext">This information may be useful: error-message-goes-here</p>
+            <p>Documented causes for render failures are:</p>
             <ul class="collection">
-                <li class="collection-item">No sources</li>
-                <li class="collection-item">A clip/path from one of the included directories has a space in it</li>
-                <li class="collection-item">A source material has a space in it</li>
-                <li class="collection-item">Your maximum clip setting may be too long</li>
-                <li class="collection-item">Settings are left blank or invalid</li>
-                <li class="collection-item">No outro is specified</li>
+                <li class="collection-item">No sources (no-sources)</li>
+                <li class="collection-item">A clip/path from one of the included directories has a space in it (__-has-spaces)</li>
+                <li class="collection-item">A source material has a space in it (source-has-spaces)</li>
+                <li class="collection-item">An error occured when combining clips (concat-error)</li>
+                <li class="collection-item">Your maximum clip setting may be too long (no-error-specified)</li>
+                <li class="collection-item">Settings are left blank or invalid (no-error-specified)</li>
+                <li class="collection-item">No outro is specified or the outro does not exist (no-error-specified)</li>
+                <li class="collection-item">Frontend UI failed to set error specification (error-message-goes-here)</li>
             </ul>
-            <p>If console is enabled, you will see what caused the render to fail. If it seems to be undocumented, please make an issue on ytpplus-node's GitHub repository.</p>
+            <p>If console is enabled, you will see what caused the render to fail (Linux/Dawrin users only). If it seems to be undocumented, please make an issue on ytpplus-node's GitHub repository.</p>
         </div>
         <div class="modal-footer">
             <a href="#render" no-autoinit="ok" class="modal-close waves-effect waves-green btn-flat modal-trigger" onclick="">Try Again</a>
@@ -739,7 +743,7 @@
                                     <label for="max" class="white-text">Maximum stream duration</label>
                                 </div>
                             </div>
-                            <div class="row tooltipped" data-position="bottom" data-tooltip="The min/max effect ranges determine what set of effects should be activated using the order as seen below. The 0 value (and other effects' values if disabled) specifies an effect-less clip.">
+                            <div class="row tooltipped" data-position="bottom" data-tooltip="The min/max effect ranges determine what set of effects should be activated using the order as seen above. The 0 value (and other effects' values if disabled) specifies an effect-less clip.">
                                 <div class="center input-field col m5">
                                     <input id="min2" value="0" type="number" class="white-text">
                                     <label for="min2" class="white-text  ">Minimum effect range (0-10)</label>
@@ -983,8 +987,17 @@
             var tab = M.Tabs.getInstance(document.querySelector('#tabs-swipe')).$tabLinks.filter('[href="#introduction-swipe"]');
             tab.trigger('click');
         });
+        var aud = new Audio()
         document.addEventListener('DOMContentLoaded', function() {
             M.Modal.init(document.querySelector("#rendering"),{dismissible:false})
+            M.Modal.init(document.querySelector("#renderdone"),{onOpenStart() {
+                aud.src = "resources/rendercomplete.wav"
+                aud.play();
+            }})
+            M.Modal.init(document.querySelector("#renderfailed"),{onOpenStart() {
+                aud.src = "resources/renderfailed.wav"
+                aud.play();
+            }})
         })
         if (window.module) module = window.module;
         if (typeof module === 'object') {
