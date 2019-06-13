@@ -96,7 +96,7 @@ const electron = require("electron"),
             ]
         }
     ];
-//process.env.NODE_ENV = "production"
+process.env.NODE_ENV = "production"
 
 let mainwindow,
     subWindow;

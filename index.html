@@ -991,11 +991,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             M.Modal.init(document.querySelector("#rendering"),{dismissible:false})
             M.Modal.init(document.querySelector("#renderdone"),{onOpenStart() {
-                aud.src = "resources/rendercomplete.wav"
+                aud.src = __dirname+"/resources/rendercomplete.wav"
                 aud.play();
             }})
             M.Modal.init(document.querySelector("#renderfailed"),{onOpenStart() {
-                aud.src = "resources/renderfailed.wav"
+                aud.src = __dirname+"/resources/renderfailed.wav"
                 aud.play();
             }})
         })
